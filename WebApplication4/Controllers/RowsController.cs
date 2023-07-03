@@ -57,13 +57,14 @@ namespace WebApplication4.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RowId,Material,Quantity,Price")] Row row)
+        
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 _context.Add(row);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            //}
             ViewData["Material"] = new SelectList(_context.MaterialMasters, "Code", "Code", row.Material);
             return View(row);
         }
