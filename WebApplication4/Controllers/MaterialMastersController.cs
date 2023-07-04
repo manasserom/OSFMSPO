@@ -21,7 +21,7 @@ namespace WebApplication4.Controllers
         // GET: MaterialMasters
         public async Task<IActionResult> Index()
         {
-            var osfmspoContext = _context.MaterialMasters.Include(m => m.MaterialTypeNavigation);
+            var osfmspoContext = _context.Set<MaterialMaster>().AsNoTracking().Include(m => m.MaterialTypeNavigation);
             return View(await osfmspoContext.ToListAsync());
         }
 

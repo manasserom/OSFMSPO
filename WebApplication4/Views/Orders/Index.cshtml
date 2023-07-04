@@ -7,11 +7,19 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+@*    <a asp-action="Create">Create New</a>
+*@      <form asp-action="Create">
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderId)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.TotalPrice)
             </th>
@@ -30,6 +38,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TotalPrice)
             </td>
