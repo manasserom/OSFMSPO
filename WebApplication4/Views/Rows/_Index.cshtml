@@ -3,7 +3,7 @@
 <div class="row g-3">
     <div class="col-md-12 ">
 
-<table class="table">
+        <table class="table border border-secondary">
     <thead>
         <tr>
             <th class="col-2">
@@ -19,8 +19,7 @@
                 Material
             </th>
             <th class="col-2">
-                        <a href="../../Rows/Create?OrderId=@(Model.First().OrderId)" class="btn btn-success">Add a new Row</a>
-
+                <a href="../../Rows/Create?OrderId=@(Model.First().OrderId)" class="btn btn-success btn-sm">Add a new Row</a>
             </th>
         </tr>
     </thead>
@@ -41,11 +40,12 @@
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.RowId">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.RowId">Delete</a>
+                    @*<a asp-action="Delete" asp-route="../Rows/Delete" asp-route-id="@item.RowId">Delete</a>*@
+                    <a href="../../Rows/Delete/@item.RowId">Delete</a>
                 </td>
             </tr>
 }
     </tbody>
 </table>
-</>
+</div>
 </div>

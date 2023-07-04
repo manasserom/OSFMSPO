@@ -23,6 +23,10 @@ namespace WebApplication4.Controllers
         public async Task<IActionResult> Index()
         {
             var osfmspoContext = _context.Orders.Where(t => t.Customer == _defaultCustomer).Include(o => o.CustomerNavigation).Include(o => o.StatusNavigation);
+            
+            var list = _context.Rows.ToList();
+            ViewBag.ListRow = list;
+
             return View(await osfmspoContext.ToListAsync());
         }
 

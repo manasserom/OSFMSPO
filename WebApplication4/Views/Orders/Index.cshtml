@@ -2,63 +2,60 @@
 
 @{
     ViewData["Title"] = "Index";
+    IEnumerable<Row> list = ViewBag.ListRow;
 }
 
 <h1>Index</h1>
 
-<p>
-@*    <a asp-action="Create">Create New</a>
-*@      <form asp-action="Create">
+<div class="row">
+    <div class="col-md-2"><strong>OrderId</strong></div>
+    <div class="col-md-3"><strong>Customer</strong></div>
+    <div class="col-md-3"><strong>TotalPrice</strong></div>
+    <div class="col-md-2"><strong>Status</strong></div>
+    <div class="col-md-2">
+        <form asp-action="Create">
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Add a new Order" class="btn btn-success btn-sm " />
             </div>
         </form>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomerNavigation)
-            </th>
-@*            <th>
-                @Html.DisplayNameFor(model => model.Row)
-            </th>
-*@            <th>
-                @Html.DisplayNameFor(model => model.StatusNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerNavigation.Code)
-            </td>
-@*            <td>
-                @Html.DisplayFor(modelItem => item.Row.RowId)
-            </td>
-*@            <td>
-                @Html.DisplayFor(modelItem => item.StatusNavigation.NameStatus)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    </div>
+</div>
+<div class="row">
+<div class="accordion accordion-flush" id="accordionFlushExample">
+    @foreach (var item in Model) {
+
+    <div class="accordion-item">
+<div class="col-md-12"> 
+            <div class="accordion-header" id="flush-heading@(item.OrderId)">
+                <div class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse@(item.OrderId)" aria-expanded="false" aria-controls="flush-collapse@(item.OrderId)">
+                    <div class="col-md-2">@item.OrderId</div>
+                    <div class="col-md-3">@item.Customer</div>
+                    <div class="col-md-3">@item.TotalPrice.ToString("c")</div>
+                    <div class="col-md-2">@item.Status</div>
+                    <div class="col-md-2">
+                        <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+            <div id="flush-collapse@(item.OrderId)" class="accordion-collapse collapse" aria-labelledby="flush-heading@(item.OrderId)" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+                        @if (list.Where(t => t.OrderId == item.OrderId).Count() == 0)
+                    {
+                        <br />
+                        <div class="alert alert-secondary" role="alert">                            
+                            There are no Rows for this order, <a href="../../Rows/Create?OrderId=@(item.OrderId)" class="">Add a new Row</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <partial name="../Rows/_Index.cshtml" model="@list.Where(t => t.OrderId == item.OrderId)" />
+                    }
+            </div>
+        </div>
+    }
+    </div>
+</div>
