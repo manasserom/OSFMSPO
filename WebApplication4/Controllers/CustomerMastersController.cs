@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,48 @@ namespace WebApplication4.Controllers
               return _context.CustomerMasters != null ? 
                           View(await _context.CustomerMasters.ToListAsync()) :
                           Problem("Entity set 'OsfmspoContext.CustomerMasters'  is null.");
+        }
+        // GET: Sing Up and Sing In
+        public async Task<IActionResult> SignIn()
+        {
+            return View();
+        }
+        // POST: Sing Up and Sing In
+        [HttpPost]
+        public async Task<IActionResult> SignIn(string Code)
+        {
+            if (!string.IsNullOrEmpty(Code))
+            {
+                var registered = _context.CustomerMasters.FindAsync(Code).Result;
+                if (registered is null)
+                {
+                    //TODO: Add error message
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Orders");
+                }
+                //_context.CustomerMasters
+            }
+            return View();
+        }
+                // GET: Sing Up and Sing In
+        public async Task<IActionResult> SignUp()
+        {
+            return View();
+        }
+        // POST: Sing Up and Sing In
+        [HttpPost]
+        public async Task<IActionResult> SignUp([Bind("Code,Description")] CustomerMaster customerMaster)
+        {
+            if (!string.IsNullOrEmpty(customerMaster.Code))
+            {
+                _context.Add(customerMaster);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Orders");
+            }
+            return View();
         }
 
         // GET: CustomerMasters/Details/5
