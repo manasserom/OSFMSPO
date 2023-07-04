@@ -1,0 +1,54 @@
+﻿@model IEnumerable<WebApplication4.Models.Row>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="row g-3">
+    <div class="col-md-12 ">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="col-2">
+                Id
+            </th>
+            <th class="col-2">
+                Quantity
+            </th>
+            <th class="col-2">
+                Price
+            </th>
+            <th class="col-4">
+                Material
+            </th>
+            <th class="col-2">
+                <a class="btn btn-success">Create a new Row</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RowId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Material)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.RowId">Edit</a> |
+                    @*                                            <a asp-action="Details" asp-route-id="@item.RowId">Details</a> |
+                *@                                            <a asp-action="Delete" asp-route-id="@item.RowId">Delete</a>
+                </td>
+            </tr>
+}
+    </tbody>
+</table>
+</>
+</div>

@@ -13,7 +13,9 @@ public partial class Row
 
     public decimal Price { get; set; }
 
+    public int? OrderId { get; set; }
+
     public virtual MaterialMaster MaterialNavigation { get; set; } = null!;
 
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    public virtual Order? Order { get; set; }
 }

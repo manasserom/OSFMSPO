@@ -13,11 +13,9 @@ public partial class Order
 
     public decimal TotalPrice { get; set; }
 
-    public int? RowId { get; set; }
-
     public virtual CustomerMaster CustomerNavigation { get; set; } = null!;
 
-    public virtual Row? Row { get; set; }
+    public virtual ICollection<Row> Rows { get; set; } = new List<Row>();
 
     public virtual Status StatusNavigation { get; set; } = null!;
 }

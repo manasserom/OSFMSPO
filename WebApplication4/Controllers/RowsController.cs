@@ -25,6 +25,14 @@ namespace WebApplication4.Controllers
             return View(await osfmspoContext.ToListAsync());
         }
 
+        // GET - Partial: Rows
+        public IActionResult _Index()
+        {
+            var osfmspoContext = _context.Rows;
+            //var osfmspoContext = _context.Set<MaterialMaster>().AsNoTracking().Include(m => m.MaterialTypeNavigation);
+            return PartialView(osfmspoContext.ToList());
+        }
+
         // GET: Rows/Details/5
         public async Task<IActionResult> Details(int? id)
         {

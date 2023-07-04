@@ -12,7 +12,7 @@ namespace WebApplication4.Controllers
     public class OrdersController : Controller
     {
         private readonly OsfmspoContext _context;
-        private readonly string _defaultCustomer = "AA11";
+        private readonly string _defaultCustomer = "BB22";
 
         public OrdersController(OsfmspoContext context)
         {
@@ -22,7 +22,7 @@ namespace WebApplication4.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var osfmspoContext = _context.Orders.Where(t => t.Customer == _defaultCustomer).Include(o => o.CustomerNavigation).Include(o => o.Row).Include(o => o.StatusNavigation);
+            var osfmspoContext = _context.Orders.Where(t => t.Customer == _defaultCustomer).Include(o => o.CustomerNavigation).Include(o => o.StatusNavigation);
             return View(await osfmspoContext.ToListAsync());
         }
 
@@ -36,7 +36,6 @@ namespace WebApplication4.Controllers
 
             var order = await _context.Orders
                 .Include(o => o.CustomerNavigation)
-                .Include(o => o.Row)
                 .Include(o => o.StatusNavigation)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
@@ -65,16 +64,11 @@ namespace WebApplication4.Controllers
         {
             //TODO: change _defaultCustomer to a session value
             order.Customer = _defaultCustomer;
-            order.RowId = null;
             order.TotalPrice = 0;
             order.Status = "New";
             _context.Add(order);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-            //ViewData["Customer"] = new SelectList(_context.CustomerMasters, "Code", "Code", order.Customer);
-            //ViewData["RowId"] = new SelectList(_context.Rows, "RowId", "RowId", order.RowId);
-            //ViewData["Status"] = new SelectList(_context.Statuses, "NameStatus", "NameStatus", order.Status);
-            //return View(order);
         }
 
         // GET: Orders/Edit/5
@@ -90,11 +84,10 @@ namespace WebApplication4.Controllers
             {
                 return NotFound();
             }
-            var list = _context.Rows.ToList();
+            var list = _context.Rows.Where(t => t.OrderId == id).ToList();
 
             ViewBag.ListRow = list;
             ViewData["Customer"] = new SelectList(_context.CustomerMasters, "Code", "Code", order.Customer);
-            ViewData["RowId"] = new SelectList(_context.Rows, "RowId", "RowId", order.RowId);
             ViewData["Status"] = new SelectList(_context.Statuses, "NameStatus", "NameStatus", order.Status);
             return View(order);
         }
@@ -132,7 +125,6 @@ namespace WebApplication4.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Customer"] = new SelectList(_context.CustomerMasters, "Code", "Code", order.Customer);
-            ViewData["RowId"] = new SelectList(_context.Rows, "RowId", "RowId", order.RowId);
             ViewData["Status"] = new SelectList(_context.Statuses, "NameStatus", "NameStatus", order.Status);
             return View(order);
         }
@@ -147,7 +139,6 @@ namespace WebApplication4.Controllers
 
             var order = await _context.Orders
                 .Include(o => o.CustomerNavigation)
-                .Include(o => o.Row)
                 .Include(o => o.StatusNavigation)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
             if (order == null)

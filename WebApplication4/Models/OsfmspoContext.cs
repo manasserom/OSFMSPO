@@ -100,10 +100,6 @@ public partial class OsfmspoContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_CustomerMaster");
 
-            entity.HasOne(d => d.Row).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.RowId)
-                .HasConstraintName("FK_Order_Row");
-
             entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.Status)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -123,6 +119,10 @@ public partial class OsfmspoContext : DbContext
                 .HasForeignKey(d => d.Material)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Row_MaterialMaster");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.Rows)
+                .HasForeignKey(d => d.OrderId)
+                .HasConstraintName("FK_Row_Order");
         });
 
         modelBuilder.Entity<Status>(entity =>
