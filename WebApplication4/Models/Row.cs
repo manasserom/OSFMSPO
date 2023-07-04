@@ -11,7 +11,7 @@ public partial class Row
 
     public int Quantity { get; set; }
 
-    public float Price { get; set; }
+    public decimal Price { get; set; }
 
     public virtual MaterialMaster MaterialNavigation { get; set; } = null!;
 

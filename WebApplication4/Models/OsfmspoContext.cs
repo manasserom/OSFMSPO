@@ -102,7 +102,6 @@ public partial class OsfmspoContext : DbContext
 
             entity.HasOne(d => d.Row).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.RowId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_Row");
 
             entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Orders)
