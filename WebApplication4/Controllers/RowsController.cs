@@ -53,7 +53,7 @@ namespace WebApplication4.Controllers
         }
 
         // GET: Rows/Create
-        public IActionResult Create()
+        public IActionResult Create(int OrderId)
         {
             ViewData["Material"] = new SelectList(_context.MaterialMasters, "Code", "Code");
             return View();
@@ -64,17 +64,14 @@ namespace WebApplication4.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RowId,Material,Quantity,Price")] Row row)
+        public async Task<IActionResult> Create([Bind("RowId,Material,Quantity,Price")] Row row, int OrderId)
         
         {
-            //if (ModelState.IsValid)
-            //{
-                _context.Add(row);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            //}
-            ViewData["Material"] = new SelectList(_context.MaterialMasters, "Code", "Code", row.Material);
-            return View(row);
+            row.OrderId = OrderId;
+            _context.Add(row);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index","Orders");
+
         }
 
         // GET: Rows/Edit/5

@@ -33,7 +33,19 @@
                 </div>
             </div>
             @*@Html.Partial("../Rows/_Index.cshtml", list)*@
-            <partial name="../Rows/_Index.cshtml" model="@list" />
+            @if (list.Count() == 0)
+            {
+                <br />
+                <div class="alert alert-secondary" role="alert">
+                    There are no Rows for this order, <a href="../../Rows/Create?OrderId=@(Model.OrderId)" class="">Add a new Row</a>
+                </div>
+            }
+            else
+            {
+                <partial name="../Rows/_Index.cshtml" model="@list" />
+
+                
+            }
 
             
         </form>
