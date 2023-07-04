@@ -69,6 +69,10 @@ namespace WebApplication4.Controllers
         {
             row.OrderId = OrderId;
             _context.Add(row);
+            var order = _context.Orders.Find(OrderId);
+            order.TotalPrice = GetTotalPrice(OrderId, _context) + row.Price;
+            order.Status = "In progress";
+            _context.Update(order);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index","Orders");
 
@@ -165,6 +169,16 @@ namespace WebApplication4.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #region AuxiliarFunctions
+        public static decimal GetTotalPrice(int OrderId, OsfmspoContext _context)
+        {
+            var listRows = _context.Rows.Where(t => t.OrderId == OrderId);
+            decimal total = 0; 
+            foreach(var row in listRows) 
+                total += row.Price;
+            return total;
+        }
+        #endregion
         private bool RowExists(int id)
         {
           return (_context.Rows?.Any(e => e.RowId == id)).GetValueOrDefault();
